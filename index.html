@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FESTASIMA Season-4 | SMK Telkom 2 Medan</title>
+    <!-- Muat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Muat Lucide Icons untuk ikon yang indah dan ringan -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Menggunakan font Inter secara default */
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Scroll behavior untuk Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Styling untuk Dark Mode */
+        .dark {
+            background-color: #1a1a2e; /* Deep dark blue */
+            color: #e4e6f4;
+        }
+        .dark .bg-primary { background-color: #2e3048; }
+        .dark .text-primary { color: #f2f2f2; }
+        .dark .text-secondary { color: #9a9a9a; }
+        .dark .border-primary { border-color: #4a4e69; }
+        .dark .btn-accent { background-color: #3f6eb7; }
+        .dark .btn-accent:hover { background-color: #2e5695; }
+        .dark .card { background-color: #2e3048; border-color: #4a4e69; }
+
+        /* Styling untuk Light Mode */
+        .light {
+            background-color: #f0f4f8; /* Light gray background */
+            color: #1f2937; /* Dark text */
+        }
+        .light .bg-primary { background-color: #ffffff; }
+        .light .text-primary { color: #1f2937; }
+        .light .text-secondary { color: #4b5563; }
+        .light .border-primary { border-color: #e5e7eb; }
+        .light .btn-accent { background-color: #14b8a6; } /* Tailwind Teal 500 */
+        .light .btn-accent:hover { background-color: #0d9488; } /* Tailwind Teal 600 */
+        .light .card { background-color: #ffffff; border-color: #e5e7eb; }
+
+        /* Kustomisasi Hamburger Menu */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+        #mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        /* Efek Hover Navbar untuk Bold dan Sedikit Lebih Besar (Poin 2) */
+        .nav-link:hover {
+            font-weight: 700; /* Bold */
+            font-size: 1.25rem; /* text-xl */
+            color: #14b8a6; /* Teal 500 */
+        }
+        .dark .nav-link:hover {
+             color: #2e5695; /* Darker blue for hover in dark mode */
+        }
+
+        /* Fade In Animation (Poin 8) */
+        .fade-in-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .fade-in-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="light">
+
+    <!-- 1. NAVIGATION BAR (Header) -->
+    <header class="sticky top-0 z-50 shadow-md bg-primary/95 backdrop-blur-sm border-b border-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo/Nama Acara -->
+                <a href="#hero" class="flex-shrink-0 flex items-center space-x-2">
+                    <img src="https://placehold.co/40x40/14b8a6/ffffff?text=F4" alt="FESTASIMA Logo" class="rounded-full">
+                    <span class="text-xl font-extrabold tracking-tight text-teal-500 transition-colors duration-200">FESTASIMA 4.0</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex md:space-x-6 lg:space-x-10">
+                    <!-- Menambahkan kelas nav-link untuk efek hover kustom -->
+                    <a href="#hero" class="nav-link text-lg font-medium text-secondary hover:text-teal-500 transition-all duration-300">Beranda</a>
+                    <a href="#tentang" class="nav-link text-lg font-medium text-secondary hover:text-teal-500 transition-all duration-300">Tentang</a>
+                    <a href="#lomba" class="nav-link text-lg font-medium text-secondary hover:text-teal-500 transition-all duration-300">Lomba</a>
+                    <a href="#timeline" class="nav-link text-lg font-medium text-secondary hover:text-teal-500 transition-all duration-300">Jadwal</a>
+                    <a href="#kontak" class="nav-link text-lg font-medium text-secondary hover:text-teal-500 transition-all duration-300">Kontak</a>
+                </nav>
+
+                <!-- Mode Toggle & Hamburger Button -->
+                <div class="flex items-center space-x-3">
+                    <!-- Light/Dark Mode Toggle -->
+                    <button id="mode-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200" aria-label="Toggle dark mode">
+                        <i data-lucide="moon" id="moon-icon" class="w-6 h-6 text-gray-700 dark:text-gray-300"></i>
+                        <i data-lucide="sun" id="sun-icon" class="w-6 h-6 text-yellow-500 dark:text-yellow-400 hidden"></i>
+                    </button>
+
+                    <!-- Hamburger Button (Visible on small screens) -->
+                    <button id="hamburger" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors duration-200" aria-label="Open menu">
+                        <i data-lucide="menu" class="w-6 h-6 text-secondary"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Drawer -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-primary shadow-xl z-50 md:hidden pt-16">
+        <nav class="flex flex-col space-y-4 p-4">
+            <a href="#hero" class="text-xl font-semibold text-secondary hover:text-teal-500 transition-colors duration-200 menu-link">Beranda</a>
+            <a href="#tentang" class="text-xl font-semibold text-secondary hover:text-teal-500 transition-colors duration-200 menu-link">Tentang</a>
+            <a href="#lomba" class="text-xl font-semibold text-secondary hover:text-teal-500 transition-colors duration-200 menu-link">Lomba</a>
+            <a href="#timeline" class="text-xl font-semibold text-secondary hover:text-teal-500 transition-colors duration-200 menu-link">Jadwal</a>
+            <a href="#kontak" class="text-xl font-semibold text-secondary hover:text-teal-500 transition-colors duration-200 menu-link">Kontak</a>
+        </nav>
+    </div>
+    <!-- Overlay untuk Mobile Menu -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden"></div>
+
+    <main class="max-w-7xl mx-auto">
+        <!-- 2. HERO SECTION (Beranda) -->
+        <section id="hero" class="fade-in-content h-auto md:h-[600px] flex items-center px-4 sm:px-6 lg:px-8 py-16 md:py-0 bg-primary/50 dark:bg-primary/50 border-b border-primary">
+            <div class="flex flex-col md:flex-row items-center justify-between w-full">
+                <!-- Teks Utama -->
+                <div class="md:w-1/2 space-y-4 text-center md:text-left">
+                    <span class="text-sm font-semibold tracking-wider text-teal-500 uppercase">SMK TELKOM 2 MEDAN MEMPERSEMBAHKAN</span>
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-primary">
+                        FESTASIMA <span class="text-teal-500">Season-4</span>
+                    </h1>
+                    <p class="text-xl text-secondary max-w-lg mx-auto md:mx-0">
+                        "Embracing Harmony in the Digital Era"
+                        <br class="hidden sm:block">
+                        Festival Seni dan Olahraga SMK Telkom 2 Medan. <!-- Poin 1: Revisi kalimat -->
+                    </p>
+                    <div class="pt-4 flex justify-center md:justify-start space-x-4">
+                        <a href="#lomba" class="btn-accent text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform duration-300 hover:scale-105">
+                            Lihat Lomba
+                        </a>
+                        <a href="#kontak" class="bg-transparent border-2 border-teal-500 text-teal-500 font-bold py-3 px-8 rounded-full shadow-lg transition-transform duration-300 hover:bg-teal-500 hover:text-white">
+                            Hubungi Kami
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Ilustrasi/Image Placeholder -->
+                <div class="md:w-1/2 mt-10 md:mt-0 flex justify-center">
+                    <div class="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-64 sm:h-80 md:h-96 bg-gray-300 dark:bg-gray-700 rounded-3xl shadow-xl flex items-center justify-center">
+                        <span class="text-xl font-semibold text-gray-600 dark:text-gray-400">Poster Acara / Visual Utama</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 3. COUNTDOWN TIMER SECTION (Poin 5: Waktu Hitung Mundur) -->
+        <section id="countdown-timer" class="fade-in-content py-12 px-4 sm:px-6 lg:px-8 bg-teal-500 dark:bg-blue-600">
+            <div class="max-w-5xl mx-auto text-center text-white">
+                <h2 class="text-2xl font-bold mb-4">Pendaftaran Ditutup Dalam</h2>
+                <div id="countdown" class="flex justify-center space-x-4 md:space-x-8 text-white">
+                    <div class="bg-white/10 p-3 sm:p-5 rounded-lg w-20 sm:w-28 shadow-lg">
+                        <div id="days" class="text-4xl sm:text-5xl font-extrabold">00</div>
+                        <div class="text-xs sm:text-sm mt-1">Hari</div>
+                    </div>
+                    <div class="bg-white/10 p-3 sm:p-5 rounded-lg w-20 sm:w-28 shadow-lg">
+                        <div id="hours" class="text-4xl sm:text-5xl font-extrabold">00</div>
+                        <div class="text-xs sm:text-sm mt-1">Jam</div>
+                    </div>
+                    <div class="bg-white/10 p-3 sm:p-5 rounded-lg w-20 sm:w-28 shadow-lg">
+                        <div id="minutes" class="text-4xl sm:text-5xl font-extrabold">00</div>
+                        <div class="text-xs sm:text-sm mt-1">Menit</div>
+                    </div>
+                    <div class="bg-white/10 p-3 sm:p-5 rounded-lg w-20 sm:w-28 shadow-lg">
+                        <div id="seconds" class="text-4xl sm:text-5xl font-extrabold">00</div>
+                        <div class="text-xs sm:text-sm mt-1">Detik</div>
+                    </div>
+                </div>
+                <p class="mt-4 text-sm font-medium text-white/90">Batas akhir pendaftaran: 20 Januari, 23:59 WIB</p>
+            </div>
+        </section>
+
+        <!-- 4. TENTANG ACARA (About) -->
+        <section id="tentang" class="fade-in-content py-20 px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-extrabold text-primary">Tentang FESTASIMA 4.0</h2>
+                <p class="text-xl text-secondary mt-2">Festival Seni dan Olahraga SMK Telkom 2 Medan</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Visi -->
+                <div class="card p-6 rounded-xl shadow-lg border border-primary text-center transition-transform duration-300 hover:scale-[1.02]">
+                    <i data-lucide="eye" class="w-10 h-10 text-teal-500 mx-auto mb-4"></i>
+                    <h3 class="text-2xl font-bold text-primary mb-2">Visi</h3>
+                    <p class="text-secondary">Mempersiapkan kader bangsa berjiwa seni, berkarakter kuat, dan mandiri di era digital.</p>
+                </div>
+                <!-- Tema -->
+                <div class="card p-6 rounded-xl shadow-lg border border-primary text-center transition-transform duration-300 hover:scale-[1.02]">
+                    <i data-lucide="sparkles" class="w-10 h-10 text-teal-500 mx-auto mb-4"></i>
+                    <h3 class="text-2xl font-bold text-primary mb-2">Tema</h3>
+                    <p class="text-secondary font-bold">"Embracing Harmony in the Digital Era"</p>
+                </div>
+                <!-- Tanggal Pelaksanaan -->
+                <div class="card p-6 rounded-xl shadow-lg border border-primary text-center transition-transform duration-300 hover:scale-[1.02]">
+                    <i data-lucide="calendar" class="w-10 h-10 text-teal-500 mx-auto mb-4"></i>
+                    <h3 class="text-2xl font-bold text-primary mb-2">Pelaksanaan</h3>
+                    <p class="text-secondary">Kamis s.d Sabtu, 5 s.d 7 Februari 2025</p>
+                    <p class="text-sm text-gray-500 mt-1">Pukul 08.00 - Selesai</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. DAFTAR LOMBA (Lomba) -->
+        <section id="lomba" class="fade-in-content py-20 px-4 sm:px-6 lg:px-8 bg-primary/70 dark:bg-primary/70">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-extrabold text-primary">Daftar Perlombaan</h2>
+                <p class="text-xl text-secondary mt-2">Pilih kategori pendaftaran Anda</p>
+            </div>
+
+            <!-- Tab Navigation (Poin 4: Menghilangkan Internal) -->
+            <div class="flex justify-center mb-8">
+                <div class="inline-flex rounded-full bg-gray-200 dark:bg-gray-700 p-1 shadow-inner">
+                    <button id="tab-smp" data-target="smp" class="tab-button active bg-teal-500 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-200">
+                        SMP/MTs Sederajat
+                    </button>
+                    <button id="tab-sma" data-target="sma" class="tab-button text-gray-700 dark:text-gray-300 font-semibold py-2 px-6 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200">
+                        SMA/Sederajat
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lomba Content -->
+            <div id="lomba-content">
+                <!-- SMP/MTs Sederajat Content -->
+                <div id="smp" class="lomba-category grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Lomba 1: Tari Kreasi Nusantara (SMP) -->
+                    <div class="card p-6 rounded-xl shadow-lg border border-primary">
+                        <h4 class="text-2xl font-bold text-teal-500 mb-2">Tari Kreasi Nusantara</h4>
+                        <p class="text-secondary mb-4">Pengembangan tari tradisional dengan sentuhan kreativitas modern, menjaga unsur budaya daerah.</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Biaya Pendaftaran: Rp 75.000</p>
+                        <button data-lomba="Tari Kreasi Nusantara" data-level="SMP" class="register-button btn-accent text-white font-semibold py-2 px-4 rounded-lg w-full transition-colors duration-200 hover:scale-[1.02] flex items-center justify-center space-x-2">
+                            <i data-lucide="whatsapp" class="w-5 h-5"></i>
+                            <span>Daftar Sekarang!</span>
+                        </button>
+                    </div>
+
+                    <!-- Lomba 2: Vocal Solo (SMP) -->
+                    <div class="card p-6 rounded-xl shadow-lg border border-primary">
+                        <h4 class="text-2xl font-bold text-teal-500 mb-2">Vocal Solo</h4>
+                        <p class="text-secondary mb-4">Menekankan pada lagu bertema tradisional atau gabungan tradisional dengan aransemen modern.</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Biaya Pendaftaran: Rp 50.000</p>
+                        <button data-lomba="Vocal Solo" data-level="SMP" class="register-button btn-accent text-white font-semibold py-2 px-4 rounded-lg w-full transition-colors duration-200 hover:scale-[1.02] flex items-center justify-center space-x-2">
+                            <i data-lucide="whatsapp" class="w-5 h-5"></i>
+                            <span>Daftar Sekarang!</span>
+                        </button>
+                    </div>
+
+                    <!-- Lomba 3: Tari Komando (SMP) -->
+                    <div class="card p-6 rounded-xl shadow-lg border border-primary">
+                        <h4 class="text-2xl font-bold text-teal-500 mb-2">Tari Komando</h4>
+                        <p class="text-secondary mb-4">Tari kreasi baru dari Papua, menggambarkan semangat, kekompakan, dan kedisiplinan pemuda.</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Biaya Pendaftaran: Rp 75.000</p>
+                        <button data-lomba="Tari Komando" data-level="SMP" class="register-button btn-accent text-white font-semibold py-2 px-4 rounded-lg w-full transition-colors duration-200 hover:scale-[1.02] flex items-center justify-center space-x-2">
+                            <i data-lucide="whatsapp" class="w-5 h-5"></i>
+                            <span>Daftar Sekarang!</span>
+                        </button>
+                    </div>
+
+                    <!-- Lomba 4: Modern Dance (SMP) -->
+                    <div class="card p-6 rounded-xl shadow-lg border border-primary">
+                        <h4 class="text-2xl font-bold text-teal-500 mb-2">Modern Dance</h4>
+                        <p class="text-secondary mb-4">Ekspresi kebebasan gerak dan perasaan, dinamis, kreatif, dan mengikuti perkembangan zaman.</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Biaya Pendaftaran: Rp 75.000</p>
+                        <button data-lomba="Modern Dance" data-level="SMP" class="register-button btn-accent text-white font-semibold py-2 px-4 rounded-lg w-full transition-colors duration-200 hover:scale-[1.02] flex items-center justify-center space-x-2">
+                            <i data-lucide="whatsapp" class="w-5 h-5"></i>
+                            <span>Daftar Sekarang!</span>
+                        </button>
+                    </div>
+
+                    <!-- Lomba 5: Puisi (SMP) -->
+                    <div class="card p-6 rounded-xl shadow-lg border border-primary">
+                        <h4 class="text-2xl font-bold text-teal-500 mb-2">Puisi</h4>
+                        <p class="text-secondary mb-4">Karya sastra pilihan kata indah, berirama, dan penuh makna untuk mengekspresikan gagasan.</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Biaya Pendaftaran: Rp 35.000</p>
+                        <button data-lomba="Puisi" data-level="SMP" class="register-button btn-accent text-white font-semibold py-2 px-4 rounded-lg w-full transition-colors duration-200 hover:scale-[1.02] flex items-center justify-center space-x-2">
+                            <i data-lucide="whatsapp" class="w-5 h-5"></i>
+                            <span>Daftar Sekarang!</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SMA/Sederajat Content -->
+                <div id="sma" class="lomba-category grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                    <!-- Lomba 1: Tari Kreasi Nusantara (SMA) -->
+                    <div class="card p-6 rounded-xl shadow-lg border border-primary">
+                        <h4 class="text-2xl font-bold text-teal-500 mb-2">Tari Kreasi Nusantara</h4>
+                        <p class="text-secondary mb-4">Pengembangan tari tradisional dengan sentuhan kreativitas modern, menjaga unsur budaya daerah.</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Biaya Pendaftaran: Rp 75.000</p>
+                        <button data-lomba="Tari Kreasi Nusantara" data-level="SMA" class="register-button btn-accent text-white font-semibold py-2 px-4 rounded-lg w-full transition-colors duration-200 hover:scale-[1.02] flex items-center justify-center space-x-2">
+                            <i data-lucide="whatsapp" class="w-5 h-5"></i>
+                            <span>Daftar Sekarang!</span>
+                        </button>
+                    </div>
+
+                    <!-- Lomba 2: Mobile Legends Tournament (SMA) -->
+                    <div class="card p-6 rounded-xl shadow-lg border border-primary">
+                        <h4 class="text-2xl font-bold text-teal-500 mb-2">Mobile Legends Tournament</h4>
+                        <p class="text-secondary mb-4">Turnamen e-sport dengan nuansa tema keseimbangan antara tradisi dan teknologi.</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Biaya Pendaftaran: Rp 50.000</p>
+                        <button data-lomba="Mobile Legends Tournament" data-level="SMA" class="register-button btn-accent text-white font-semibold py-2 px-4 rounded-lg w-full transition-colors duration-200 hover:scale-[1.02] flex items-center justify-center space-x-2">
+                            <i data-lucide="whatsapp" class="w-5 h-5"></i>
+                            <span>Daftar Sekarang!</span>
+                        </button>
+                    </div>
+
+                    <!-- Lomba 3: Musikalisasi Puisi (SMA) -->
+                    <div class="card p-6 rounded-xl shadow-lg border border-primary">
+                        <h4 class="text-2xl font-bold text-teal-500 mb-2">Musikalisasi Puisi</h4>
+                        <p class="text-secondary mb-4">Mengembangkan bakat dan apresiasi terhadap sastra dan puisi, serta meningkatkan kemampuan berbicara.</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Biaya Pendaftaran: Rp 35.000</p>
+                        <button data-lomba="Musikalisasi Puisi" data-level="SMA" class="register-button btn-accent text-white font-semibold py-2 px-4 rounded-lg w-full transition-colors duration-200 hover:scale-[1.02] flex items-center justify-center space-x-2">
+                            <i data-lucide="whatsapp" class="w-5 h-5"></i>
+                            <span>Daftar Sekarang!</span>
+                        </button>
+                    </div>
+
+                    <!-- Lomba 4: Debat Bahasa Inggris (SMA) -->
+                    <div class="card p-6 rounded-xl shadow-lg border border-primary">
+                        <h4 class="text-2xl font-bold text-teal-500 mb-2">Debat Bahasa Inggris</h4>
+                        <p class="text-secondary mb-4">Diskusi formal untuk menyampaikan argumen yang saling bertentangan dalam bahasa Inggris.</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Biaya Pendaftaran: Rp 35.000</p>
+                        <button data-lomba="Debat Bahasa Inggris" data-level="SMA" class="register-button btn-accent text-white font-semibold py-2 px-4 rounded-lg w-full transition-colors duration-200 hover:scale-[1.02] flex items-center justify-center space-x-2">
+                            <i data-lucide="whatsapp" class="w-5 h-5"></i>
+                            <span>Daftar Sekarang!</span>
+                        </button>
+                    </div>
+
+                    <!-- Lomba 5: Business Plan (SMA) -->
+                    <div class="card p-6 rounded-xl shadow-lg border border-primary">
+                        <h4 class="text-2xl font-bold text-teal-500 mb-2">Business Plan</h4>
+                        <p class="text-secondary mb-4">Perencanaan sistematis untuk menggambarkan tujuan bisnis, strategi, dan proyeksi keuangan.</p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Biaya Pendaftaran: Rp 35.000</p>
+                        <button data-lomba="Business Plan" data-level="SMA" class="register-button btn-accent text-white font-semibold py-2 px-4 rounded-lg w-full transition-colors duration-200 hover:scale-[1.02] flex items-center justify-center space-x-2">
+                            <i data-lucide="whatsapp" class="w-5 h-5"></i>
+                            <span>Daftar Sekarang!</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. JADWAL (Timeline) - Poin 6: Layout Jadwal Lebih Rapi -->
+        <section id="timeline" class="fade-in-content py-20 px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-extrabold text-primary">Jadwal Acara</h2>
+                <p class="text-xl text-secondary mt-2">Catat tanggal pentingnya!</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto space-y-10">
+                <!-- Timeline Item 1: Pendaftaran -->
+                <div class="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-8">
+                    <div class="flex-shrink-0 w-full md:w-1/4 text-left md:text-right">
+                        <p class="text-lg font-bold text-teal-500">Dibuka Sekarang</p>
+                    </div>
+                    <div class="flex-shrink-0 relative">
+                        <div class="w-6 h-6 rounded-full bg-teal-500 ring-4 ring-teal-200 dark:ring-teal-700"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 h-full top-0 border-r-2 border-dashed border-teal-500 -z-10 hidden md:block"></div>
+                    </div>
+                    <div class="flex-grow card p-6 rounded-xl shadow-lg border border-primary transition-transform duration-300 hover:scale-[1.01] w-full">
+                        <h4 class="font-bold text-primary text-xl mb-1">Pendaftaran Peserta</h4>
+                        <p class="text-secondary text-base">Segera daftarkan tim/diri Anda sebelum batas waktu 20 Januari 2025.</p>
+                    </div>
+                </div>
+                
+                <!-- Timeline Item 2: Batas Akhir Pendaftaran -->
+                <div class="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-8">
+                    <div class="flex-shrink-0 w-full md:w-1/4 text-left md:text-right">
+                        <p class="text-lg font-bold text-teal-500">20 Januari 2025</p>
+                    </div>
+                    <div class="flex-shrink-0 relative">
+                        <div class="w-6 h-6 rounded-full bg-red-500 ring-4 ring-red-200 dark:ring-red-700"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 h-full top-0 border-r-2 border-dashed border-teal-500 -z-10 hidden md:block"></div>
+                    </div>
+                    <div class="flex-grow card p-6 rounded-xl shadow-lg border border-primary transition-transform duration-300 hover:scale-[1.01] w-full">
+                        <h4 class="font-bold text-primary text-xl mb-1">Batas Akhir Pendaftaran</h4>
+                        <p class="text-secondary text-base">Pukul 23:59 WIB. Pastikan semua berkas dan pembayaran sudah diverifikasi.</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 3: Pelaksanaan Lomba -->
+                <div class="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-8">
+                    <div class="flex-shrink-0 w-full md:w-1/4 text-left md:text-right">
+                        <p class="text-lg font-bold text-teal-500">5 - 7 Februari 2025</p>
+                    </div>
+                    <div class="flex-shrink-0 relative">
+                        <div class="w-6 h-6 rounded-full bg-teal-500 ring-4 ring-teal-200 dark:ring-teal-700"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 h-full top-0 border-r-2 border-dashed border-teal-500 -z-10 hidden md:block"></div>
+                    </div>
+                    <div class="flex-grow card p-6 rounded-xl shadow-lg border border-primary transition-transform duration-300 hover:scale-[1.01] w-full">
+                        <h4 class="font-bold text-primary text-xl mb-1">Pelaksanaan Acara Inti</h4>
+                        <p class="text-secondary text-base">Berbagai lomba seni dan olahraga dilaksanakan secara serentak di SMK Telkom 2 Medan.</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 4: Penutupan -->
+                <div class="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-8">
+                    <div class="flex-shrink-0 w-full md:w-1/4 text-left md:text-right">
+                        <p class="text-lg font-bold text-teal-500">7 Februari 2025</p>
+                    </div>
+                    <div class="flex-shrink-0 relative">
+                        <div class="w-6 h-6 rounded-full bg-teal-500 ring-4 ring-teal-200 dark:ring-teal-700"></div>
+                    </div>
+                    <div class="flex-grow card p-6 rounded-xl shadow-lg border border-primary transition-transform duration-300 hover:scale-[1.01] w-full">
+                        <h4 class="font-bold text-primary text-xl mb-1">Closing Ceremony & Pengumuman</h4>
+                        <p class="text-secondary text-base">Penyerahan hadiah dan penutupan acara Festasima Season-4.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. LOKASI (Map & Address) -->
+        <section id="lokasi" class="fade-in-content py-20 px-4 sm:px-6 lg:px-8 bg-primary/70 dark:bg-primary/70">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-extrabold text-primary">Lokasi Pelaksanaan</h2>
+                <p class="text-xl text-secondary mt-2">Bertempat di kampus SMK Telkom 2 Medan</p>
+            </div>
+            <div class="max-w-4xl mx-auto card p-6 rounded-xl shadow-lg border border-primary">
+                <h3 class="text-2xl font-bold text-teal-500 mb-4">SMK Telkom 2 Medan</h3>
+                <p class="text-secondary mb-4 flex items-start space-x-2">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-teal-500 mt-1 flex-shrink-0"></i>
+                    <span>Jl. Halat No.68, Kota Matsum IV, Kec. Medan Area, Kota Medan, Sumatera Utara 20215</span>
+                </p>
+                <!-- Google Maps Embed Placeholder -->
+                <div class="w-full h-64 bg-gray-300 dark:bg-gray-700 rounded-lg overflow-hidden shadow-md flex items-center justify-center">
+                    <span class="text-gray-600 dark:text-gray-400">Placeholder Peta Lokasi</span>
+                </div>
+                <a href="https://maps.app.goo.gl/YourMapLinkHere" target="_blank" class="mt-4 inline-flex items-center space-x-2 text-teal-500 font-semibold hover:text-teal-600 transition-colors">
+                    <i data-lucide="external-link" class="w-5 h-5"></i>
+                    <span>Lihat di Google Maps</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 8. KONTAK (Footer/Contact) -->
+        <section id="kontak" class="fade-in-content py-20 px-4 sm:px-6 lg:px-8">
+             <div class="text-center mb-12">
+                <h2 class="text-4xl font-extrabold text-primary">Hubungi Panitia</h2>
+                <p class="text-xl text-secondary mt-2">Kami siap membantu pertanyaan Anda</p>
+            </div>
+            <div class="max-w-xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Contact Person 1 (Ketua Panitia) -->
+                <div class="card p-6 rounded-xl shadow-lg border border-primary text-center">
+                    <i data-lucide="user-check" class="w-8 h-8 text-teal-500 mx-auto mb-3"></i>
+                    <h3 class="text-xl font-bold text-primary">Muhammad Auliya</h3>
+                    <p class="text-secondary">Ketua Panitia</p>
+                    <a href="https://wa.me/6281234567890?text=Halo%20Kak%20Muhammad%20Auliya,%20saya%20ingin%20bertanya%20mengenai%20acara%20FESTASIMA%20Season-4." target="_blank" class="mt-3 inline-flex items-center space-x-2 text-teal-500 font-semibold hover:text-teal-600 transition-colors">
+                        <i data-lucide="phone" class="w-4 h-4"></i>
+                        <span>+62 812-3456-7890 (WA)</span>
+                    </a>
+                </div>
+                <!-- Contact Person 2 (Bendahara) -->
+                <div class="card p-6 rounded-xl shadow-lg border border-primary text-center">
+                    <i data-lucide="wallet" class="w-8 h-8 text-teal-500 mx-auto mb-3"></i>
+                    <h3 class="text-xl font-bold text-primary">Sylva Kasyh Weklesya</h3>
+                    <p class="text-secondary">Bendahara / Pendaftaran</p>
+                    <a href="https://wa.me/6289876543210?text=Halo%20Kak%20Sylva,%20saya%20ingin%20bertanya%20mengenai%20pembayaran%20pendaftaran%20FESTASIMA%20Season-4." target="_blank" class="mt-3 inline-flex items-center space-x-2 text-teal-500 font-semibold hover:text-teal-600 transition-colors">
+                        <i data-lucide="phone" class="w-4 h-4"></i>
+                        <span>+62 898-7654-3210 (WA)</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-primary text-center text-secondary text-sm bg-primary/70 dark:bg-primary/70">
+        &copy; 2025 FESTASIMA Season-4. Diselenggarakan oleh OSIS SMK Telkom 2 Medan.
+    </footer>
+
+    <!-- Impor file JavaScript yang terpisah -->
+    <script type="module" src="./index.js"></script>
+</body>
+</html>
