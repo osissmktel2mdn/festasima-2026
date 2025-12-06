@@ -128,7 +128,7 @@ export function setupMobileMenu() {
 }
 
 // ------------------
-// 3. Lomba Tabs Logic
+// 3. Lomba Tabs Logic (Permintaan 1: Perbaikan Tampilan Non-Aktif di Light Mode)
 // ------------------
 export function setupTabs() {
     const tabs = document.querySelectorAll('.tab-button');
@@ -137,16 +137,19 @@ export function setupTabs() {
     // Fungsi untuk mengaktifkan tab
     const activateTab = (tab) => {
         tabs.forEach(t => {
-            // Hapus kelas aktif dari semua tombol
-            t.classList.remove('bg-teal-500', 'text-white', 'dark:bg-cyan-500', 'dark:text-gray-900');
-            // Tambahkan kelas non-aktif
-            t.classList.add('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-300', 'dark:hover:bg-gray-600');
-        });
-        // Tambahkan kelas aktif ke tombol yang diklik
-        tab.classList.add('bg-teal-500', 'text-white', 'dark:bg-cyan-500', 'dark:text-gray-900');
-        tab.classList.remove('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-300', 'dark:hover:bg-gray-600');
-
-        categories.forEach(category => {
+  // Hapus kelas aktif dari semua tombol
+        t.classList.remove('bg-teal-500', 'text-white', 'dark:bg-cyan-500', 'dark:text-gray-900');
+        
+        // Tambahkan kelas non-aktif (default + hover untuk non-aktif)
+        t.classList.add('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-800', 'hover:text-white', 'dark:hover:bg-gray-600', 'dark:hover:text-white'); 
+    });
+    
+    /// Tambahkan kelas aktif ke tombol yang diklik
+    tab.classList.add('bg-teal-500', 'text-white', 'dark:bg-cyan-500', 'dark:text-gray-900');
+    
+    // Hapus kelas non-aktif/hover non-aktif dari tombol yang diklik 
+    // Agar tab yang aktif tidak berubah warna saat di-hover
+    tab.classList.remove('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-800', 'hover:text-white', 'dark:hover:bg-gray-600', 'dark:hover:text-white');    categories.forEach(category => {
             category.classList.add('hidden');
             category.classList.remove('grid');
         });
