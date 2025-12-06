@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupRegisterButtons(); 
     startCountdown(); 
     setupFadeIn();    
-    checkScheduleStatus(); // Cek status jadwal saat dimuat
+    checkScheduleStatus(); // Cek status jadwal saat dimuat (Permintaan 1)
 });
 
 // ------------------
@@ -89,7 +89,8 @@ const menuOverlay = document.getElementById('mobile-menu-overlay');
 
 function openMenu() {
     if (mobileMenu && menuOverlay) {
-        mobileMenu.classList.add('active');
+        // Menggunakan kelas 'open' seperti yang didefinisikan di CSS
+        mobileMenu.classList.add('open'); 
         menuOverlay.classList.remove('hidden');
         document.body.style.overflow = 'hidden'; 
     }
@@ -97,7 +98,8 @@ function openMenu() {
 
 function closeMenu() {
     if (mobileMenu && menuOverlay) {
-        mobileMenu.classList.remove('active');
+        // Menggunakan kelas 'open' seperti yang didefinisikan di CSS
+        mobileMenu.classList.remove('open');
         menuOverlay.classList.add('hidden');
         document.body.style.overflow = 'auto'; 
     }
@@ -106,7 +108,7 @@ function closeMenu() {
 export function setupMobileMenu() {
     const hamburgerButton = document.getElementById('hamburger');
     const closeMenuButton = document.getElementById('close-menu');
-    
+
     if (hamburgerButton) {
         hamburgerButton.addEventListener('click', openMenu);
     }
@@ -140,7 +142,6 @@ export function setupTabs() {
             // Tambahkan kelas non-aktif
             t.classList.add('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-300', 'dark:hover:bg-gray-600');
         });
-
         // Tambahkan kelas aktif ke tombol yang diklik
         tab.classList.add('bg-teal-500', 'text-white', 'dark:bg-cyan-500', 'dark:text-gray-900');
         tab.classList.remove('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-300', 'dark:hover:bg-gray-600');
@@ -149,7 +150,6 @@ export function setupTabs() {
             category.classList.add('hidden');
             category.classList.remove('grid');
         });
-
         const targetContent = document.getElementById(tab.getAttribute('data-target'));
         if (targetContent) {
             targetContent.classList.remove('hidden');
@@ -187,7 +187,7 @@ function register(lombaName, level) {
         cpName = 'Kak Fulita';
     } else {
         // Fallback ke CP General (Bu Juli)
-        phoneNumber = '6281269206036'; 
+        phoneNumber = '6281269206036';
         cpName = 'Bu Juli';
     }
 
@@ -196,7 +196,6 @@ function register(lombaName, level) {
     const message = encodeURIComponent(
         `Halo ${cpName}, saya ingin bertanya tentang pendaftaran lomba ${lombaName} untuk tingkat ${level} di acara FESTASIMA Season-4.`
     );
-
     const waLink = `https://wa.me/${phoneNumber}?text=${message}`;
 
     window.open(waLink, '_blank');
@@ -218,30 +217,29 @@ export function setupRegisterButtons() {
 export function startCountdown() {
     // Tanggal target: 20 Januari 2026, 23:59:59 WIB (Batas Pendaftaran)
     // Perhatikan: Bulan di JavaScript 0-indexed (0=Januari)
-    const targetYear = 2026; 
+    const targetYear = 2026;
     const targetMonth = 0; // Januari
     const targetDay = 20;
     const targetHour = 23;
     const targetMinute = 59;
     const targetSecond = 59;
-    
-    const countDownDate = new Date(targetYear, targetMonth, targetDay, targetHour, targetMinute, targetSecond).getTime();
 
-    const countdownInterval = setInterval(function() {
+    const targetDate = new Date(targetYear, targetMonth, targetDay, targetHour, targetMinute, targetSecond).getTime();
+
+    const daysEl = document.getElementById("days");
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
+
+    const updateCountdown = () => {
         const now = new Date().getTime();
-        const distance = countDownDate - now;
+        const distance = targetDate - now;
 
-        // Perhitungan untuk hari, jam, menit, dan detik
+        // Perhitungan waktu
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Ambil elemen HTML
-        const daysEl = document.getElementById("days");
-        const hoursEl = document.getElementById("hours");
-        const minutesEl = document.getElementById("minutes");
-        const secondsEl = document.getElementById("seconds");
 
         if (daysEl && hoursEl && minutesEl && secondsEl) {
             // Tampilkan hasil, pastikan format dua digit
@@ -262,54 +260,71 @@ export function startCountdown() {
             }
             const countdownContainer = document.getElementById("countdown-timer").querySelector('h2');
             if (countdownContainer) {
-                 countdownContainer.textContent = "Pendaftaran TELAH DITUTUP";
+                countdownContainer.textContent = "Pendaftaran TELAH DITUTUP";
             }
+            // Panggil checkScheduleStatus lagi untuk update marker setelah countdown selesai
+            checkScheduleStatus(); 
         }
-    }, 1000);
+    };
+
+    // Panggil fungsi segera saat start
+    updateCountdown(); 
+    
+    // Update setiap 1 detik
+    const countdownInterval = setInterval(updateCountdown, 1000);
 }
 
 // ------------------
-// 6. Fade In Animation Logic 
+// 6. Fade In Animation Logic (Permintaan 2)
 // ------------------
 export function setupFadeIn() {
     const fadeInElements = document.querySelectorAll('.fade-in-content');
-    
+
     // Gunakan Intersection Observer untuk memicu animasi saat elemen masuk viewport
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
-                 // Tambahkan sedikit delay berdasarkan indeks untuk efek berurutan
+                // Tambahkan sedikit delay berdasarkan kelas delay di HTML
+                let delay = 0;
+                if (entry.target.classList.contains('delay-100')) delay = 100;
+                else if (entry.target.classList.contains('delay-200')) delay = 200;
+                else if (entry.target.classList.contains('delay-300')) delay = 300;
+                else if (entry.target.classList.contains('delay-400')) delay = 400;
+                else if (entry.target.classList.contains('delay-500')) delay = 500;
+                else if (entry.target.classList.contains('delay-600')) delay = 600;
+                else if (entry.target.classList.contains('delay-700')) delay = 700;
+
                 setTimeout(() => {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Stop observing once visible
-                }, index * 100); 
+                    entry.target.classList.add('visible'); // Tambahkan kelas 'visible'
+                    observer.unobserve(entry.target);
+                }, delay);
             }
         });
-    }, {
-        threshold: 0.1 // Pemicu ketika 10% elemen terlihat
-    });
+    }, { threshold: 0.1 }); // Mulai animasi saat 10% elemen terlihat
 
-    fadeInElements.forEach(el => {
-        observer.observe(el);
+    fadeInElements.forEach(element => {
+        observer.observe(element);
     });
 }
 
 // ------------------
-// 7. Jadwal Acara Status (Timeline Marker Logic)
+// 7. Schedule Status Check (Permintaan 1)
 // ------------------
+
+// Daftar semua event timeline beserta tanggalnya
+const timelineEvents = [
+    // Permintaan 1: Batas Akhir Pendaftaran Peserta (20 Jan 2026)
+    { id: 'status-pendaftaran', date: new Date(2026, 0, 20, 23, 59, 59) }, 
+    // Acara Utama
+    { id: 'date-2026-01-25', date: new Date(2026, 0, 25) },  // Technical Meeting (Jan 25)
+    { id: 'date-2026-02-05', date: new Date(2026, 1, 5) },   // Pembukaan & Lomba H-1 (Feb 5)
+    { id: 'date-2026-02-06', date: new Date(2026, 1, 6) },   // Lomba H-2 (Feb 6)
+    { id: 'date-2026-02-07', date: new Date(2026, 1, 7) },   // Lomba H-3 & Penutupan (Feb 7)
+];
+
 export function checkScheduleStatus() {
     const now = new Date();
-    // Tanggal batas pendaftaran: 20 Januari 2026, 23:59:59 (Bulan 0-indexed)
     const pendaftaranEndDate = new Date(2026, 0, 20, 23, 59, 59);
-
-    // Linimasa acara
-    const timelineEvents = [
-        { id: 'status-pendaftaran', date: pendaftaranEndDate },
-        { id: 'status-25-01-2026', date: new Date(2026, 0, 25, 0, 0, 0) }, // 25 Jan 2026 (TM)
-        { id: 'status-05-02-2026', date: new Date(2026, 1, 5, 0, 0, 0) }, // 5 Feb 2026 (Acara 1)
-        { id: 'status-06-02-2026', date: new Date(2026, 1, 6, 0, 0, 0) }, // 6 Feb 2026 (Acara 2)
-        { id: 'status-07-02-2026', date: new Date(2026, 1, 7, 0, 0, 0) }, // 7 Feb 2026 (Acara 3)
-    ];
 
     const isSameDay = (date1, date2) => {
         return date1.getFullYear() === date2.getFullYear() &&
@@ -321,22 +336,23 @@ export function checkScheduleStatus() {
         const statusElement = document.getElementById(item.id);
         if (statusElement) {
             // Hapus semua kelas warna default
-            statusElement.classList.remove('bg-red-500', 'bg-green-500', 'dark:bg-red-500', 'dark:bg-green-500');
+            statusElement.classList.remove('bg-red-500', 'bg-green-500', 'bg-blue-500', 'dark:bg-red-500', 'dark:bg-green-500', 'dark:bg-blue-500', 'bg-gray-400', 'dark:bg-gray-600'); 
 
             if (item.id === 'status-pendaftaran') {
-                // Logika Pendaftaran: Hijau jika belum ditutup
-                if (now < item.date) {
+                // Logika Pendaftaran: Hijau jika belum ditutup (Permintaan 1)
+                if (now < pendaftaranEndDate) { 
                     statusElement.classList.add('bg-green-500', 'dark:bg-green-500'); // Sedang Berlangsung (Pendaftaran)
                 } else {
-                    statusElement.classList.add('bg-red-500', 'dark:bg-red-500'); // Sudah Lewat
+                    statusElement.classList.add('bg-gray-400', 'dark:bg-gray-600'); // Sudah Lewat/Ditutup
                 }
             } else {
-                // Logika Acara Utama (TM, Hari 1, 2, 3): Hijau jika hari ini
+                // Logika Acara Utama (TM, Hari 1, 2, 3)
                 if (isSameDay(now, item.date)) {
-                    statusElement.classList.add('bg-green-500', 'dark:bg-green-500'); // Sedang Berlangsung (Hari H)
-                } else if (now > item.date && item.date.toDateString() !== pendaftaranEndDate.toDateString()) {
-                     // Jika sudah lewat, tetap merah, tapi jangan ubah pendaftaran
-                     statusElement.classList.add('bg-red-500', 'dark:bg-red-500');
+                    statusElement.classList.add('bg-blue-500', 'dark:bg-blue-500'); // Sedang Berlangsung (Hari H)
+                } else if (now > item.date) {
+                    statusElement.classList.add('bg-gray-400', 'dark:bg-gray-600'); // Sudah Lewat
+                } else {
+                    statusElement.classList.add('bg-gray-400', 'dark:bg-gray-600'); // Belum Mulai
                 }
             }
         }
