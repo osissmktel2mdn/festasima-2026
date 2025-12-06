@@ -89,9 +89,7 @@ const menuOverlay = document.getElementById('mobile-menu-overlay');
 
 function openMenu() {
     if (mobileMenu && menuOverlay) {
-        // Tambahkan kelas untuk animasi slide-in
-        mobileMenu.classList.add('transform', 'translate-x-0');
-        mobileMenu.classList.remove('transform', 'translate-x-full');
+        mobileMenu.classList.add('active');
         menuOverlay.classList.remove('hidden');
         document.body.style.overflow = 'hidden'; 
     }
@@ -99,23 +97,13 @@ function openMenu() {
 
 function closeMenu() {
     if (mobileMenu && menuOverlay) {
-        // Tambahkan kelas untuk animasi slide-out
-        mobileMenu.classList.remove('transform', 'translate-x-0');
-        mobileMenu.classList.add('transform', 'translate-x-full');
-        // Delay hide overlay untuk menyelesaikan animasi slide-out
-        setTimeout(() => {
-            menuOverlay.classList.add('hidden');
-            document.body.style.overflow = 'auto'; 
-        }, 300); // Sesuaikan dengan durasi transisi CSS
+        mobileMenu.classList.remove('active');
+        menuOverlay.classList.add('hidden');
+        document.body.style.overflow = 'auto'; 
     }
 }
 
 export function setupMobileMenu() {
-    // Pastikan mobileMenu default tersembunyi
-    if (mobileMenu) {
-        mobileMenu.classList.add('transform', 'translate-x-full', 'transition-transform', 'duration-300');
-    }
-    
     const hamburgerButton = document.getElementById('hamburger');
     const closeMenuButton = document.getElementById('close-menu');
     
@@ -146,22 +134,16 @@ export function setupTabs() {
 
     // Fungsi untuk mengaktifkan tab
     const activateTab = (tab) => {
-        // Dapatkan warna accent dari variabel CSS
-        const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--color-accent');
-        
         tabs.forEach(t => {
             // Hapus kelas aktif dari semua tombol
-            t.classList.remove('border-b-4', 'border-accent');
-            t.classList.add('text-gray-700', 'dark:text-gray-300', 'hover:text-accent');
-            // Hapus kelas warna bg dari tab
             t.classList.remove('bg-teal-500', 'text-white', 'dark:bg-cyan-500', 'dark:text-gray-900');
+            // Tambahkan kelas non-aktif
+            t.classList.add('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-300', 'dark:hover:bg-gray-600');
         });
 
         // Tambahkan kelas aktif ke tombol yang diklik
-        tab.classList.add('border-b-4');
-        tab.style.borderColor = accentColor;
-        tab.classList.remove('text-gray-700', 'dark:text-gray-300');
-
+        tab.classList.add('bg-teal-500', 'text-white', 'dark:bg-cyan-500', 'dark:text-gray-900');
+        tab.classList.remove('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-300', 'dark:hover:bg-gray-600');
 
         categories.forEach(category => {
             category.classList.add('hidden');
@@ -190,24 +172,29 @@ export function setupTabs() {
 }
 
 // ------------------
-// 4. WhatsApp Auto Text Function (Diubah ke versi yang lebih singkat)
+// 4. WhatsApp Auto Text Function (Revisi CP & Sopan Santun)
 // ------------------
 function register(lombaName, level) {
     let phoneNumber;
+    let cpName;
 
     // Tentukan CP berdasarkan level
     if (level.includes('SMP')) {
         phoneNumber = '6282124292621'; // Eva
+        cpName = 'Kak Eva';
     } else if (level.includes('SMA')) {
         phoneNumber = '6283151299112'; // Fulita
+        cpName = 'Kak Fulita';
     } else {
         // Fallback ke CP General (Bu Juli)
         phoneNumber = '6281269206036'; 
+        cpName = 'Bu Juli';
     }
 
-    // Membuat teks pesan (URL-encoded) - Versi yang lebih singkat
+    // Membuat teks pesan (URL-encoded)
+    // Penambahan "Kak" untuk Eva dan Fulita
     const message = encodeURIComponent(
-        `Permisi, saya mau daftar/bertanya tentang lomba ${lombaName} (${level}) untuk FESTASIMA Season-4.`
+        `Halo ${cpName}, saya ingin bertanya tentang pendaftaran lomba ${lombaName} untuk tingkat ${level} di acara FESTASIMA Season-4.`
     );
 
     const waLink = `https://wa.me/${phoneNumber}?text=${message}`;
@@ -282,7 +269,7 @@ export function startCountdown() {
 }
 
 // ------------------
-// 6. Fade In Animation Logic (Dipastikan kembali berfungsi di semua elemen)
+// 6. Fade In Animation Logic 
 // ------------------
 export function setupFadeIn() {
     const fadeInElements = document.querySelectorAll('.fade-in-content');
@@ -303,28 +290,12 @@ export function setupFadeIn() {
     });
 
     fadeInElements.forEach(el => {
-        // Pastikan elemen memiliki class awal (di CSS harus ada .fade-in-content { opacity: 0; transform: translateY(20px); transition: ... } )
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-
-        // Logika untuk menampilkan
-        const style = document.createElement('style');
-        style.textContent = `
-            .fade-in-content.visible {
-                opacity: 1 !important;
-                transform: translateY(0) !important;
-            }
-        `;
-        document.head.appendChild(style);
-
         observer.observe(el);
     });
 }
 
-
 // ------------------
-// 7. Jadwal Acara Status (Timeline Marker Logic) - Pendaftaran Hijau sebelum 20 Jan 2026
+// 7. Jadwal Acara Status (Timeline Marker Logic)
 // ------------------
 export function checkScheduleStatus() {
     const now = new Date();
@@ -353,7 +324,7 @@ export function checkScheduleStatus() {
             statusElement.classList.remove('bg-red-500', 'bg-green-500', 'dark:bg-red-500', 'dark:bg-green-500');
 
             if (item.id === 'status-pendaftaran') {
-                // Logika Pendaftaran: Hijau jika belum ditutup (sesuai permintaan)
+                // Logika Pendaftaran: Hijau jika belum ditutup
                 if (now < item.date) {
                     statusElement.classList.add('bg-green-500', 'dark:bg-green-500'); // Sedang Berlangsung (Pendaftaran)
                 } else {
@@ -363,8 +334,8 @@ export function checkScheduleStatus() {
                 // Logika Acara Utama (TM, Hari 1, 2, 3): Hijau jika hari ini
                 if (isSameDay(now, item.date)) {
                     statusElement.classList.add('bg-green-500', 'dark:bg-green-500'); // Sedang Berlangsung (Hari H)
-                } else if (now > item.date) {
-                     // Jika sudah lewat, beri warna merah (kecuali pendaftaran yang sudah di-handle di atas)
+                } else if (now > item.date && item.date.toDateString() !== pendaftaranEndDate.toDateString()) {
+                     // Jika sudah lewat, tetap merah, tapi jangan ubah pendaftaran
                      statusElement.classList.add('bg-red-500', 'dark:bg-red-500');
                 }
             }

@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FESTASIMA Season-4 | Embracing Harmony in Digital Era</title>
+    <!-- Memuat Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Lucide Icons untuk ikon yang elegan -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Tambahkan Smooth Scroll ke HTML */
-        html {
-            scroll-behavior: smooth;
-        }
-        
         /* Menggunakan font Inter */
         body {
             font-family: 'Inter', sans-serif;
@@ -36,6 +33,7 @@
             --color-accent-rgb: 0, 173, 181;
             --color-shadow: rgba(0, 0, 0, 0.5);
             --color-card-border: rgba(var(--color-accent-rgb), 0.2);
+            --color-text-contrast: #111827; /* Kontras (Digunakan di Light Mode) */
         }
         
         /* Light Mode: Perbaikan kontras (Menggunakan warna yang lebih kuat) */
@@ -48,45 +46,40 @@
             --color-accent-rgb: 29, 78, 216;
             --color-shadow: rgba(0, 0, 0, 0.1);
             --color-card-border: rgba(var(--color-accent-rgb), 0.4);
+            --color-text-contrast: #ffffff; /* Kontras (Digunakan di Dark Mode) */
         }
 
         /* Terapkan variabel CSS ke elemen spesifik yang perlu transisi */
-        .card, .lomba-card, #mobile-menu {
+        .card, .lomba-card {
             background-color: var(--color-bg-secondary);
             color: var(--color-text-primary);
         }
-
-        /* Border untuk card lomba/CP */
-        .lomba-card {
-            border: 1px solid var(--color-card-border);
+        
+        /* Mobile Menu diatur sembunyi secara default */
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        #mobile-menu.open {
+            transform: translateX(0);
         }
         
-        /* Header background untuk mode light */
-        .light .sticky-header {
-             background-color: #ffffffd0; 
-        }
-        .dark .sticky-header {
-             background-color: var(--color-bg-secondary);
-        }
-
-        /* Teks yang harus kontras, terutama di Light Mode */
+        /* Perbaikan Kontras Teks di Light Mode */
         .text-main-color {
             color: var(--color-text-primary);
         }
-        
-        /* Countdown Box */
-        .countdown-box {
-            background-color: var(--color-bg-secondary);
-            border: 2px solid var(--color-accent);
-        }
-        
-        /* Warna Aksen untuk ikon dan teks khusus */
-        .text-accent {
-            color: var(--color-accent);
+        .text-secondary-color {
+            color: var(--color-text-secondary);
         }
 
+        /* Tombol Aksen (Daftar Sekarang) - Pastikan teks selalu kontras */
+        .btn-accent {
+            background-color: var(--color-accent);
+            color: var(--color-text-contrast); /* Menggunakan warna kontras (Putih di Light, Hitam di Dark) */
+        }
+        
         /* ------------------ */
-        /* Timeline Layout Fix (Poin 4) - Tata Letak Baru untuk Kerapian Mobile */
+        /* Timeline Layout Fix (Poin 3) */
         /* ------------------ */
         .timeline-container {
             position: relative;
@@ -100,7 +93,7 @@
             bottom: 0;
             left: 50%;
             width: 3px;
-            background-color: var(--color-card-border); /* Garis halus */
+            background-color: var(--color-card-border); 
             transform: translateX(-50%);
             z-index: 10;
         }
@@ -108,86 +101,105 @@
         /* Mobile View: Garis Vertikal Kiri (Lebih Rapi) */
         @media (max-width: 768px) {
             .timeline-container::before {
-                left: 1.5rem; /* Garis vertikal di kiri untuk mobile */
+                left: 1.5rem; 
                 transform: translateX(0);
             }
         }
         
-        /* Setiap Item Timeline */
+        /* Setiap Item Timeline - Menggunakan align-items: center untuk vertikal balance */
         .timeline-item {
             position: relative;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             display: flex; 
-            align-items: center; /* Memastikan marker di tengah */
+            align-items: center; /* KUNCI: Menyeimbangkan tinggi penanda di tengah konten */
+            justify-content: space-between;
         }
 
         /* Penanda (Marker) */
         .timeline-marker {
             position: absolute;
             z-index: 20;
-            border: 4px solid var(--color-bg-primary); /* Border tebal untuk menutupi garis */
-            transition: background-color 0.3s;
-        }
-
-        /* Desktop: Posisikan Marker di Tengah */
-        .timeline-item {
-            justify-content: space-between;
-        }
-        .timeline-marker {
+            border: 4px solid var(--color-bg-primary); 
+            transition: background-color 0.3s, border-color 0.3s;
             left: 50%;
             transform: translateX(-50%);
         }
-
-        /* Konten Kiri (Desktop) */
+        
+        /* Konten Kiri (Untuk Rincian - Desktop) */
         .timeline-content-left {
              width: calc(50% - 2.5rem); 
              margin-right: 2.5rem;
              text-align: right;
         }
         
-        /* Konten Kanan (Desktop) */
+        /* Konten Kanan (Untuk Tanggal - Desktop) */
         .timeline-content-right {
              width: calc(50% - 2.5rem);
              margin-left: 2.5rem;
              text-align: left;
         }
-        
+
+        /* Card Konten Timeline */
+        .timeline-card {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-card-border);
+        }
+
         /* Mobile View (Single Column) */
         @media (max-width: 768px) {
             .timeline-item {
                 flex-direction: row; 
                 justify-content: flex-start;
-                padding-left: 3rem; /* Ruang untuk garis dan marker di kiri */
+                padding-left: 3rem; 
             }
             .timeline-marker {
-                left: 1.5rem; /* Posisikan marker di garis kiri */
+                left: 1.5rem; 
                 transform: translateX(-50%);
             }
             
-            /* Konten Kiri/Kanan menyatu, menggunakan lebar penuh */
+            /* Konten Kanan (Tanggal) dipindahkan ke atas konten kiri (Rincian) */
             .timeline-content-left, .timeline-content-right {
                 width: 100%;
                 margin: 0;
                 text-align: left;
-            }
-
-            /* Hapus jarak/ukuran konten yang kosong (misal timeline-content-left saat item di kanan) */
-            .timeline-item > div:empty {
-                display: none;
+                order: 2;
             }
             
+            /* Tampilan Mobile: Tanggal (Kanan) harus ada di atas Rincian (Kiri) */
+            .timeline-content-right {
+                order: 1; 
+                margin-bottom: 0.5rem; /* Tambahkan sedikit jarak ke rincian */
+            }
+
+            /* Sembunyikan label tanggal/rincian desktop */
+            .md\:block, .md\:order-1, .md\:order-3 {
+                display: block; /* Override Tailwind flex order */
+                order: initial;
+            }
+        }
+        
+        /* Timeline Specific Colors - Pastikan kontras */
+        .timeline-content-right p, .timeline-content-left p {
+            color: var(--color-text-primary);
+        }
+        
+        /* Teks abu-abu di timeline */
+        .timeline-subtext {
+            color: var(--color-text-secondary);
         }
 
     </style>
 </head>
 <body class="light">
 
-    <div id="mobile-menu-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-80 z-40" onclick="closeMenu()"></div>
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-80 z-40" onclick="toggleMenu()"></div>
 
+    <!-- Mobile Menu (Diubah agar tersembunyi secara default) -->
     <nav id="mobile-menu" class="fixed top-0 right-0 w-80 h-full z-50 p-6 shadow-xl overflow-y-auto">
         <div class="flex justify-between items-center mb-10">
             <h3 class="text-xl font-bold text-main-color">Menu</h3>
-            <button id="close-menu" onclick="closeMenu()" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
+            <button id="close-menu" onclick="toggleMenu()" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
         </div>
@@ -210,13 +222,16 @@
         </ul>
     </nav>
 
+    <!-- Header (Navigation Bar) -->
     <header class="sticky top-0 z-30 shadow-md sticky-header backdrop-blur-sm transition duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
+                <!-- Logo/Nama Acara -->
                 <a href="#hero" class="text-2xl font-extrabold tracking-tight transition duration-150 text-main-color">
                     FESTA<span class="text-accent">SIMA</span>
                 </a>
                 
+                <!-- Desktop Navigation -->
                 <nav class="hidden md:flex space-x-8">
                     <a href="#about" class="menu-link font-medium hover:text-accent transition duration-150 text-main-color">Tentang</a>
                     <a href="#lomba" class="menu-link font-medium hover:text-accent transition duration-150 text-main-color">Lomba</a>
@@ -225,13 +240,16 @@
                     <a href="#location" class="menu-link font-medium hover:text-accent transition duration-150 text-main-color">Lokasi</a>
                 </nav>
 
+                <!-- Actions (Mode Toggle & Hamburger) -->
                 <div class="flex items-center space-x-3">
+                    <!-- Mode Toggle (Desktop) -->
                     <button id="mode-toggle" aria-label="Toggle Dark Mode" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-150 hidden md:block text-main-color">
                         <i data-lucide="sun" id="sun-icon" class="w-5 h-5 hidden"></i>
                         <i data-lucide="moon" id="moon-icon" class="w-5 h-5"></i>
                     </button>
                     
-                    <button id="hamburger" aria-label="Open Menu" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-150 md:hidden text-main-color">
+                    <!-- Hamburger (Mobile) -->
+                    <button id="hamburger" aria-label="Open Menu" onclick="toggleMenu()" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-150 md:hidden text-main-color">
                         <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
                 </div>
@@ -241,6 +259,7 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
+        <!-- 1. Hero Section -->
         <section id="hero" class="py-12 md:py-20 fade-in-content">
             <div class="text-center max-w-4xl mx-auto">
                 <span class="inline-flex items-center px-3 py-1 mb-4 text-xs font-semibold uppercase tracking-wider rounded-full text-accent bg-blue-50 dark:bg-cyan-900/50">
@@ -249,17 +268,19 @@
                 <h1 class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tighter text-main-color">
                     FESTASIMA <span class="text-accent">2026</span>
                 </h1>
-                <p class="mt-4 text-xl md:text-2xl text-gray-600 dark:text-gray-300 font-light italic">
+                <p class="mt-4 text-xl md:text-2xl text-secondary-color font-light italic">
                     "Embracing Harmony in the Digital Era"
                 </p>
                 <div class="mt-8">
-                    <a href="#lomba" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-accent hover:bg-blue-700 dark:hover:bg-cyan-600 transition duration-300 shadow-lg">
+                    <!-- Tombol Daftar Sekarang menggunakan btn-accent untuk kontras di kedua mode -->
+                    <a href="#lomba" class="btn-accent inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full hover:opacity-90 transition duration-300 shadow-lg">
                         Daftar Sekarang <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
                     </a>
                 </div>
             </div>
         </section>
 
+        <!-- Countdown Timer -->
         <section id="countdown-timer" class="py-12 fade-in-content delay-100">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold text-main-color">
@@ -267,25 +288,30 @@
                 </h2>
             </div>
             <div class="flex justify-center space-x-4 sm:space-x-8">
+                <!-- Days -->
                 <div class="countdown-box flex flex-col items-center justify-center p-4 sm:p-6 rounded-xl w-24 sm:w-32">
                     <span id="days" class="text-4xl sm:text-5xl font-extrabold text-accent">00</span>
-                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400 mt-1">Hari</span>
+                    <span class="text-sm font-medium text-secondary-color mt-1">Hari</span>
                 </div>
+                <!-- Hours -->
                 <div class="countdown-box flex flex-col items-center justify-center p-4 sm:p-6 rounded-xl w-24 sm:w-32">
                     <span id="hours" class="text-4xl sm:text-5xl font-extrabold text-accent">00</span>
-                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400 mt-1">Jam</span>
+                    <span class="text-sm font-medium text-secondary-color mt-1">Jam</span>
                 </div>
+                <!-- Minutes -->
                 <div class="countdown-box flex flex-col items-center justify-center p-4 sm:p-6 rounded-xl w-24 sm:w-32">
                     <span id="minutes" class="text-4xl sm:text-5xl font-extrabold text-accent">00</span>
-                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400 mt-1">Menit</span>
+                    <span class="text-sm font-medium text-secondary-color mt-1">Menit</span>
                 </div>
+                <!-- Seconds -->
                 <div class="countdown-box flex flex-col items-center justify-center p-4 sm:p-6 rounded-xl w-24 sm:w-32">
                     <span id="seconds" class="text-4xl sm:text-5xl font-extrabold text-accent">00</span>
-                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400 mt-1">Detik</span>
+                    <span class="text-sm font-medium text-secondary-color mt-1">Detik</span>
                 </div>
             </div>
         </section>
 
+        <!-- 2. About Section -->
         <section id="about" class="py-12 md:py-20 fade-in-content delay-200">
             <h2 class="text-4xl font-extrabold text-center mb-12 text-accent">Tentang FESTASIMA</h2>
             <div class="card p-8 md:p-12 rounded-2xl shadow-xl">
@@ -312,91 +338,105 @@
             </div>
         </section>
 
+        <!-- 3. Lomba Section -->
         <section id="lomba" class="py-12 md:py-20 fade-in-content delay-300">
             <h2 class="text-4xl font-extrabold text-center mb-12 text-accent">Daftar Perlombaan</h2>
             
             <div class="card p-6 md:p-10 rounded-2xl shadow-xl">
                 
+                <!-- Tab Buttons -->
                 <div class="flex justify-center mb-8 border-b border-gray-200 dark:border-gray-700">
-                    <button id="tab-smp" data-target="smp" class="tab-button px-6 py-3 font-semibold rounded-t-lg transition duration-150">
+                    <button id="tab-smp" data-target="smp" class="tab-button px-6 py-3 font-semibold rounded-t-lg transition duration-150 text-main-color">
                         SMP / Sederajat
                     </button>
-                    <button id="tab-sma" data-target="sma" class="tab-button px-6 py-3 font-semibold rounded-t-lg transition duration-150">
+                    <button id="tab-sma" data-target="sma" class="tab-button px-6 py-3 font-semibold rounded-t-lg transition duration-150 text-main-color">
                         SMA / Sederajat
                     </button>
                 </div>
                 
+                <!-- Lomba Content SMP -->
                 <div id="smp" class="hidden grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Lomba Card (Vocal Solo) -->
                     <div class="p-6 lomba-card rounded-xl shadow-md flex flex-col">
                         <h3 class="text-xl font-bold mb-2 text-accent">Vocal Solo</h3>
-                        <p class="text-gray-700 dark:text-gray-400 mb-4 flex-grow">Lomba menyanyi yang menekankan pada penggabungan unsur tradisional dengan aransemen modern.</p>
-                        <button data-lomba="Vocal Solo" data-level="SMP/Sederajat" class="register-button w-full mt-auto py-2 px-4 text-white font-semibold rounded-full bg-accent hover:bg-blue-700 dark:hover:bg-cyan-600 transition duration-300">
+                        <p class="text-secondary-color mb-4 flex-grow">Lomba menyanyi yang menekankan pada penggabungan unsur tradisional dengan aransemen modern.</p>
+                        <button data-lomba="Vocal Solo" data-level="SMP/Sederajat" class="register-button w-full mt-auto py-2 px-4 font-semibold rounded-full btn-accent hover:opacity-90 transition duration-300">
                             Daftar Lomba <i data-lucide="external-link" class="w-4 h-4 inline ml-1"></i>
                         </button>
                     </div>
+                    <!-- Lomba Card (Tari Kreasi Nusantara) -->
                     <div class="p-6 lomba-card rounded-xl shadow-md flex flex-col">
                         <h3 class="text-xl font-bold mb-2 text-accent">Tari Kreasi Nusantara</h3>
-                        <p class="text-gray-700 dark:text-gray-400 mb-4 flex-grow">Pengembangan tari tradisional atau ciptaan baru yang tetap menjaga unsur budaya daerah.</p>
-                        <button data-lomba="Tari Kreasi Nusantara" data-level="SMP/Sederajat" class="register-button w-full mt-auto py-2 px-4 text-white font-semibold rounded-full bg-accent hover:bg-blue-700 dark:hover:bg-cyan-600 transition duration-300">
+                        <p class="text-secondary-color mb-4 flex-grow">Pengembangan tari tradisional atau ciptaan baru yang tetap menjaga unsur budaya daerah.</p>
+                        <button data-lomba="Tari Kreasi Nusantara" data-level="SMP/Sederajat" class="register-button w-full mt-auto py-2 px-4 font-semibold rounded-full btn-accent hover:opacity-90 transition duration-300">
                             Daftar Lomba <i data-lucide="external-link" class="w-4 h-4 inline ml-1"></i>
                         </button>
                     </div>
+                    <!-- Lomba Card (Tari Komando) -->
                     <div class="p-6 lomba-card rounded-xl shadow-md flex flex-col">
                         <h3 class="text-xl font-bold mb-2 text-accent">Tari Komando</h3>
-                        <p class="text-gray-700 dark:text-gray-400 mb-4 flex-grow">Tari kreasi baru dari Papua yang menggambarkan semangat, kekompakan, dan kedisiplinan.</p>
-                        <button data-lomba="Tari Komando" data-level="SMP/Sederajat" class="register-button w-full mt-auto py-2 px-4 text-white font-semibold rounded-full bg-accent hover:bg-blue-700 dark:hover:bg-cyan-600 transition duration-300">
+                        <p class="text-secondary-color mb-4 flex-grow">Tari kreasi baru dari Papua yang menggambarkan semangat, kekompakan, dan kedisiplinan.</p>
+                        <button data-lomba="Tari Komando" data-level="SMP/Sederajat" class="register-button w-full mt-auto py-2 px-4 font-semibold rounded-full btn-accent hover:opacity-90 transition duration-300">
                             Daftar Lomba <i data-lucide="external-link" class="w-4 h-4 inline ml-1"></i>
                         </button>
                     </div>
+                    <!-- Lomba Card (Modern Dance) -->
                     <div class="p-6 lomba-card rounded-xl shadow-md flex flex-col">
                         <h3 class="text-xl font-bold mb-2 text-accent">Modern Dance</h3>
-                        <p class="text-gray-700 dark:text-gray-400 mb-4 flex-grow">Tarian yang mengekspresikan kebebasan gerak dan perasaan, dinamis, dan kreatif.</p>
-                        <button data-lomba="Modern Dance" data-level="SMP/Sederajat" class="register-button w-full mt-auto py-2 px-4 text-white font-semibold rounded-full bg-accent hover:bg-blue-700 dark:hover:bg-cyan-600 transition duration-300">
+                        <p class="text-secondary-color mb-4 flex-grow">Tarian yang mengekspresikan kebebasan gerak dan perasaan, dinamis, dan kreatif.</p>
+                        <button data-lomba="Modern Dance" data-level="SMP/Sederajat" class="register-button w-full mt-auto py-2 px-4 font-semibold rounded-full btn-accent hover:opacity-90 transition duration-300">
                             Daftar Lomba <i data-lucide="external-link" class="w-4 h-4 inline ml-1"></i>
                         </button>
                     </div>
+                    <!-- Lomba Card (Puisi) -->
                     <div class="p-6 lomba-card rounded-xl shadow-md flex flex-col">
                         <h3 class="text-xl font-bold mb-2 text-accent">Puisi</h3>
-                        <p class="text-gray-700 dark:text-gray-400 mb-4 flex-grow">Lomba deklamasi puisi untuk mengekspresikan perasaan, pengalaman, serta gagasan penulis.</p>
-                        <button data-lomba="Puisi" data-level="SMP/Sederajat" class="register-button w-full mt-auto py-2 px-4 text-white font-semibold rounded-full bg-accent hover:bg-blue-700 dark:hover:bg-cyan-600 transition duration-300">
+                        <p class="text-secondary-color mb-4 flex-grow">Lomba deklamasi puisi untuk mengekspresikan perasaan, pengalaman, serta gagasan penulis.</p>
+                        <button data-lomba="Puisi" data-level="SMP/Sederajat" class="register-button w-full mt-auto py-2 px-4 font-semibold rounded-full btn-accent hover:opacity-90 transition duration-300">
                             Daftar Lomba <i data-lucide="external-link" class="w-4 h-4 inline ml-1"></i>
                         </button>
                     </div>
                 </div>
 
+                <!-- Lomba Content SMA -->
                 <div id="sma" class="hidden grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Lomba Card (Tari Kreasi Nusantara) -->
                     <div class="p-6 lomba-card rounded-xl shadow-md flex flex-col">
                         <h3 class="text-xl font-bold mb-2 text-accent">Tari Kreasi Nusantara</h3>
-                        <p class="text-gray-700 dark:text-gray-400 mb-4 flex-grow">Pengembangan tari tradisional atau ciptaan baru yang tetap menjaga unsur budaya daerah.</p>
-                        <button data-lomba="Tari Kreasi Nusantara" data-level="SMA/Sederajat" class="register-button w-full mt-auto py-2 px-4 text-white font-semibold rounded-full bg-accent hover:bg-blue-700 dark:hover:bg-cyan-600 transition duration-300">
+                        <p class="text-secondary-color mb-4 flex-grow">Pengembangan tari tradisional atau ciptaan baru yang tetap menjaga unsur budaya daerah.</p>
+                        <button data-lomba="Tari Kreasi Nusantara" data-level="SMA/Sederajat" class="register-button w-full mt-auto py-2 px-4 font-semibold rounded-full btn-accent hover:opacity-90 transition duration-300">
                             Daftar Lomba <i data-lucide="external-link" class="w-4 h-4 inline ml-1"></i>
                         </button>
                     </div>
+                    <!-- Lomba Card (Mobile Legends Tournament) -->
                     <div class="p-6 lomba-card rounded-xl shadow-md flex flex-col">
                         <h3 class="text-xl font-bold mb-2 text-accent">Mobile Legends Tournament</h3>
-                        <p class="text-gray-700 dark:text-gray-400 mb-4 flex-grow">Turnamen Mobile Legends dengan nuansa tema yang mencerminkan keseimbangan tradisi dan teknologi.</p>
-                        <button data-lomba="Mobile Legends Tournament" data-level="SMA/Sederajat" class="register-button w-full mt-auto py-2 px-4 text-white font-semibold rounded-full bg-accent hover:bg-blue-700 dark:hover:bg-cyan-600 transition duration-300">
+                        <p class="text-secondary-color mb-4 flex-grow">Turnamen Mobile Legends dengan nuansa tema yang mencerminkan keseimbangan tradisi dan teknologi.</p>
+                        <button data-lomba="Mobile Legends Tournament" data-level="SMA/Sederajat" class="register-button w-full mt-auto py-2 px-4 font-semibold rounded-full btn-accent hover:opacity-90 transition duration-300">
                             Daftar Lomba <i data-lucide="external-link" class="w-4 h-4 inline ml-1"></i>
                         </button>
                     </div>
+                    <!-- Lomba Card (Musikalisasi Puisi) -->
                     <div class="p-6 lomba-card rounded-xl shadow-md flex flex-col">
                         <h3 class="text-xl font-bold mb-2 text-accent">Musikalisasi Puisi</h3>
-                        <p class="text-gray-700 dark:text-gray-400 mb-4 flex-grow">Meningkatkan apresiasi sastra dengan mengembangkan bakat peserta dalam membawakan puisi.</p>
-                        <button data-lomba="Musikalisasi Puisi" data-level="SMA/Sederajat" class="register-button w-full mt-auto py-2 px-4 text-white font-semibold rounded-full bg-accent hover:bg-blue-700 dark:hover:bg-cyan-600 transition duration-300">
+                        <p class="text-secondary-color mb-4 flex-grow">Meningkatkan apresiasi sastra dengan mengembangkan bakat peserta dalam membawakan puisi.</p>
+                        <button data-lomba="Musikalisasi Puisi" data-level="SMA/Sederajat" class="register-button w-full mt-auto py-2 px-4 font-semibold rounded-full btn-accent hover:opacity-90 transition duration-300">
                             Daftar Lomba <i data-lucide="external-link" class="w-4 h-4 inline ml-1"></i>
                         </button>
                     </div>
+                    <!-- Lomba Card (English Debate) -->
                     <div class="p-6 lomba-card rounded-xl shadow-md flex flex-col">
                         <h3 class="text-xl font-bold mb-2 text-accent">Debat Bahasa Inggris</h3>
-                        <p class="text-gray-700 dark:text-gray-400 mb-4 flex-grow">Diskusi formal untuk menyampaikan argumen yang saling bertentangan dalam bahasa Inggris.</p>
-                        <button data-lomba="Debat Bahasa Inggris" data-level="SMA/Sederajat" class="register-button w-full mt-auto py-2 px-4 text-white font-semibold rounded-full bg-accent hover:bg-blue-700 dark:hover:bg-cyan-600 transition duration-300">
+                        <p class="text-secondary-color mb-4 flex-grow">Diskusi formal untuk menyampaikan argumen yang saling bertentangan dalam bahasa Inggris.</p>
+                        <button data-lomba="Debat Bahasa Inggris" data-level="SMA/Sederajat" class="register-button w-full mt-auto py-2 px-4 font-semibold rounded-full btn-accent hover:opacity-90 transition duration-300">
                             Daftar Lomba <i data-lucide="external-link" class="w-4 h-4 inline ml-1"></i>
                         </button>
                     </div>
+                    <!-- Lomba Card (Business Plan) -->
                     <div class="p-6 lomba-card rounded-xl shadow-md flex flex-col">
                         <h3 class="text-xl font-bold mb-2 text-accent">Business Plan</h3>
-                        <p class="text-gray-700 dark:text-gray-400 mb-4 flex-grow">Menggambarkan tujuan bisnis, strategi operasional, dan proyeksi keuangan perusahaan digital.</p>
-                        <button data-lomba="Business Plan" data-level="SMA/Sederajat" class="register-button w-full mt-auto py-2 px-4 text-white font-semibold rounded-full bg-accent hover:bg-blue-700 dark:hover:bg-cyan-600 transition duration-300">
+                        <p class="text-secondary-color mb-4 flex-grow">Menggambarkan tujuan bisnis, strategi operasional, dan proyeksi keuangan perusahaan digital.</p>
+                        <button data-lomba="Business Plan" data-level="SMA/Sederajat" class="register-button w-full mt-auto py-2 px-4 font-semibold rounded-full btn-accent hover:opacity-90 transition duration-300">
                             Daftar Lomba <i data-lucide="external-link" class="w-4 h-4 inline ml-1"></i>
                         </button>
                     </div>
@@ -404,75 +444,87 @@
             </div>
         </section>
         
+        <!-- 4. Timeline Acara Section (Perbaikan Layout dan Kerapian) -->
         <section id="schedule" class="py-12 md:py-20 fade-in-content delay-400">
             <h2 class="text-4xl font-extrabold text-center mb-12 text-accent">Timeline Acara</h2>
 
             <div class="max-w-4xl mx-auto card p-8 md:p-10 rounded-2xl shadow-xl">
-                <div class="timeline-container space-y-8">
+                <!-- Timeline Container Baru -->
+                <div class="timeline-container">
                     
+                    <!-- Item Timeline 1 (Kiri: Rincian | Kanan: Tanggal) -->
+                    <!-- Rincian harus di KIRI -->
                     <div class="timeline-item">
-                         <div class="timeline-content-left p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md md:order-1">
-                            <p class="font-bold text-lg text-accent mb-1 md:hidden">s/d 20 Januari 2026</p> <h3 class="font-semibold text-xl text-main-color">Pendaftaran Peserta</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Online & Konfirmasi Pembayaran</p>
+                         <!-- Konten Kiri (Rincian) -->
+                        <div class="timeline-content-left p-4 timeline-card rounded-lg shadow-md md:order-1">
+                            <h3 class="font-bold text-xl text-accent">Pendaftaran Peserta</h3>
+                            <p class="timeline-subtext">Online & Konfirmasi Pembayaran</p>
                         </div>
                         
-                        <div id="status-pendaftaran" class="timeline-marker w-5 h-5 bg-red-500 dark:bg-red-500 rounded-full transition-colors duration-300 md:order-2"></div>
+                        <!-- Marker -->
+                        <div id="date-2026-01-20" class="timeline-marker w-5 h-5 bg-red-500 rounded-full transition-colors duration-300 md:order-2"></div>
                         
-                        <div class="timeline-content-right md:order-3">
-                            <div class="hidden md:block md:text-left">
-                                <p class="font-bold text-lg text-main-color">s/d 20 Januari 2026</p>
-                            </div>
+                        <!-- Konten Kanan (Tanggal) -->
+                        <div class="timeline-content-right p-4 md:order-3 text-main-color">
+                            <p class="font-bold text-lg">s/d 20 Januari 2026</p>
                         </div>
                     </div>
                     
+                    <!-- Item Timeline 2 (Kiri: Tanggal | Kanan: Rincian) -->
+                    <!-- Tanggal harus di KANAN -->
                     <div class="timeline-item">
-                        <div class="timeline-content-left md:order-1">
-                            <div class="hidden md:block md:text-right">
-                                <p class="font-bold text-lg text-main-color">25 Januari 2026</p>
-                            </div>
+                        <!-- Konten Kiri (Tanggal - Desktop Kiri, Mobile Atas) -->
+                        <div class="timeline-content-left p-4 md:order-1 text-main-color">
+                            <p class="font-bold text-lg">25 Januari 2026</p>
                         </div>
                         
-                        <div id="status-25-01-2026" class="timeline-marker w-5 h-5 bg-red-500 dark:bg-red-500 rounded-full transition-colors duration-300 md:order-2"></div>
+                        <!-- Marker -->
+                        <div id="date-2026-01-25" class="timeline-marker w-5 h-5 bg-red-500 rounded-full transition-colors duration-300 md:order-2"></div>
                         
-                        <div class="timeline-content-right p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md md:order-3">
-                            <p class="font-bold text-lg text-accent mb-1 md:hidden">25 Januari 2026</p> <h3 class="font-semibold text-xl text-main-color">Technical Meeting</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">09.00 - Selesai (Online/Offline)</p>
+                        <!-- Konten Kanan (Rincian) -->
+                        <div class="timeline-content-right p-4 timeline-card rounded-lg shadow-md md:order-3">
+                            <h3 class="font-bold text-xl text-accent">Technical Meeting</h3>
+                            <p class="timeline-subtext">09.00 - Selesai (Online/Offline)</p>
                         </div>
                     </div>
 
+                    <!-- Item Timeline 3 (Kiri: Rincian | Kanan: Tanggal) -->
                     <div class="timeline-item">
-                         <div class="timeline-content-left p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md md:order-1">
-                            <p class="font-bold text-lg text-accent mb-1 md:hidden">05 Februari 2026</p> <h3 class="font-semibold text-xl text-main-color">Pembukaan & Lomba Hari Pertama</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">08.00 - Selesai</p>
-                            <ul class="list-disc pl-5 mt-2 text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                         <!-- Konten Kiri (Rincian) -->
+                        <div class="timeline-content-left p-4 timeline-card rounded-lg shadow-md md:order-1">
+                            <h3 class="font-bold text-xl text-accent">Pembukaan & Lomba Hari Pertama</h3>
+                            <p class="timeline-subtext">08.00 - Selesai</p>
+                            <ul class="list-disc pl-5 mt-2 text-sm text-secondary-color space-y-1">
                                 <li>Pembukaan Acara Resmi</li>
                                 <li>Lomba Vocal Solo (SMP)</li>
                                 <li>Lomba Tari Kreasi Nusantara (SMP/SMA)</li>
                             </ul>
                         </div>
                         
-                        <div id="status-05-02-2026" class="timeline-marker w-5 h-5 bg-red-500 dark:bg-red-500 rounded-full transition-colors duration-300 md:order-2"></div>
+                        <!-- Marker -->
+                        <div id="date-2026-02-05" class="timeline-marker w-5 h-5 bg-red-500 rounded-full transition-colors duration-300 md:order-2"></div>
                         
-                        <div class="timeline-content-right md:order-3">
-                            <div class="hidden md:block md:text-left">
-                                <p class="font-bold text-lg text-main-color">05 Februari 2026</p>
-                            </div>
+                        <!-- Konten Kanan (Tanggal) -->
+                        <div class="timeline-content-right p-4 md:order-3 text-main-color">
+                            <p class="font-bold text-lg">05 Februari 2026</p>
                         </div>
                     </div>
 
+                    <!-- Item Timeline 4 (Kiri: Tanggal | Kanan: Rincian) -->
                     <div class="timeline-item">
-                        <div class="timeline-content-left md:order-1">
-                            <div class="hidden md:block md:text-right">
-                                <p class="font-bold text-lg text-main-color">06 Februari 2026</p>
-                            </div>
+                         <!-- Konten Kiri (Tanggal) -->
+                        <div class="timeline-content-left p-4 md:order-1 text-main-color">
+                            <p class="font-bold text-lg">06 Februari 2026</p>
                         </div>
                         
-                        <div id="status-06-02-2026" class="timeline-marker w-5 h-5 bg-red-500 dark:bg-red-500 rounded-full transition-colors duration-300 md:order-2"></div>
+                        <!-- Marker -->
+                        <div id="date-2026-02-06" class="timeline-marker w-5 h-5 bg-red-500 rounded-full transition-colors duration-300 md:order-2"></div>
                         
-                        <div class="timeline-content-right p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md md:order-3">
-                            <p class="font-bold text-lg text-accent mb-1 md:hidden">06 Februari 2026</p> <h3 class="font-semibold text-xl text-main-color">Lomba Hari Kedua</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">08.00 - Selesai</p>
-                            <ul class="list-disc pl-5 mt-2 text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                        <!-- Konten Kanan (Rincian) -->
+                        <div class="timeline-content-right p-4 timeline-card rounded-lg shadow-md md:order-3">
+                            <h3 class="font-bold text-xl text-accent">Lomba Hari Kedua</h3>
+                            <p class="timeline-subtext">08.00 - Selesai</p>
+                            <ul class="list-disc pl-5 mt-2 text-sm text-secondary-color space-y-1">
                                 <li>Lomba Mobile Legends Tournament (SMA)</li>
                                 <li>Lomba Debat Bahasa Inggris (SMA)</li>
                                 <li>Lomba Modern Dance (SMP)</li>
@@ -480,11 +532,13 @@
                         </div>
                     </div>
 
+                    <!-- Item Timeline 5 (Kiri: Rincian | Kanan: Tanggal) -->
                     <div class="timeline-item">
-                        <div class="timeline-content-left p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md md:order-1">
-                            <p class="font-bold text-lg text-accent mb-1 md:hidden">07 Februari 2026</p> <h3 class="font-semibold text-xl text-main-color">Closing Ceremony & Pengumuman</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">08.00 - Selesai</p>
-                            <ul class="list-disc pl-5 mt-2 text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                        <!-- Konten Kiri (Rincian) -->
+                        <div class="timeline-content-left p-4 timeline-card rounded-lg shadow-md md:order-1">
+                            <h3 class="font-bold text-xl text-accent">Closing Ceremony & Pengumuman</h3>
+                            <p class="timeline-subtext">08.00 - Selesai</p>
+                            <ul class="list-disc pl-5 mt-2 text-sm text-secondary-color space-y-1">
                                 <li>Lomba Musikalisasi Puisi (SMA)</li>
                                 <li>Lomba Business Plan (SMA)</li>
                                 <li>Lomba Puisi (SMP)</li>
@@ -492,44 +546,48 @@
                             </ul>
                         </div>
                         
-                        <div id="status-07-02-2026" class="timeline-marker w-5 h-5 bg-red-500 dark:bg-red-500 rounded-full transition-colors duration-300 md:order-2"></div>
+                        <!-- Marker -->
+                        <div id="date-2026-02-07" class="timeline-marker w-5 h-5 bg-red-500 rounded-full transition-colors duration-300 md:order-2"></div>
                         
-                        <div class="timeline-content-right md:order-3">
-                            <div class="hidden md:block md:text-left">
-                                <p class="font-bold text-lg text-main-color">07 Februari 2026</p>
-                            </div>
+                        <!-- Konten Kanan (Tanggal) -->
+                        <div class="timeline-content-right p-4 md:order-3 text-main-color">
+                            <p class="font-bold text-lg">07 Februari 2026</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         
+        <!-- 5. Contact Section -->
         <section id="contact" class="py-12 md:py-20 fade-in-content delay-500">
             <h2 class="text-4xl font-extrabold text-center mb-12 text-accent">Hubungi Kami (Contact Person)</h2>
             <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <!-- CP Pendaftar SMP (Eva) -->
                 <div class="p-6 lomba-card rounded-xl flex flex-col items-center">
                     <i data-lucide="school" class="w-8 h-8 text-accent mx-auto mb-3"></i>
                     <h3 class="text-xl font-bold text-main-color">Eva</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Pendaftaran SMP/Sederajat</p>
-                    <a href="https://wa.me/6282124292621" target="_blank" class="mt-3 inline-flex items-center space-x-2 text-accent font-semibold hover:text-blue-700 dark:hover:text-cyan-500 transition-colors">
+                    <p class="text-secondary-color">Pendaftaran SMP/Sederajat</p>
+                    <a href="https://wa.me/6282124292621" target="_blank" class="mt-3 inline-flex items-center space-x-2 text-accent font-semibold hover:opacity-80 transition-colors">
                         <i data-lucide="whatsapp" class="w-4 h-4"></i>
                         <span>+62 821-2429-2621</span>
                     </a>
                 </div>
+                <!-- CP Pendaftar SMA (Fulita) -->
                 <div class="p-6 lomba-card rounded-xl flex flex-col items-center">
                     <i data-lucide="graduation-cap" class="w-8 h-8 text-accent mx-auto mb-3"></i>
                     <h3 class="text-xl font-bold text-main-color">Fulita</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Pendaftaran SMA/Sederajat</p>
-                    <a href="https://wa.me/6283151299112" target="_blank" class="mt-3 inline-flex items-center space-x-2 text-accent font-semibold hover:text-blue-700 dark:hover:text-cyan-500 transition-colors">
+                    <p class="text-secondary-color">Pendaftaran SMA/Sederajat</p>
+                    <a href="https://wa.me/6283151299112" target="_blank" class="mt-3 inline-flex items-center space-x-2 text-accent font-semibold hover:opacity-80 transition-colors">
                         <i data-lucide="whatsapp" class="w-4 h-4"></i>
                         <span>+62 831-5129-9112</span>
                     </a>
                 </div>
+                <!-- CP General (Bu Juli) -->
                 <div class="p-6 lomba-card rounded-xl flex flex-col items-center">
                     <i data-lucide="megaphone" class="w-8 h-8 text-accent mx-auto mb-3"></i>
                     <h3 class="text-xl font-bold text-main-color">Bu Juli</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Informasi Umum (General)</p>
-                    <a href="https://wa.me/6281269206036" target="_blank" class="mt-3 inline-flex items-center space-x-2 text-accent font-semibold hover:text-blue-700 dark:hover:text-cyan-500 transition-colors">
+                    <p class="text-secondary-color">Informasi Umum (General)</p>
+                    <a href="https://wa.me/6281269206036" target="_blank" class="mt-3 inline-flex items-center space-x-2 text-accent font-semibold hover:opacity-80 transition-colors">
                         <i data-lucide="whatsapp" class="w-4 h-4"></i>
                         <span>+62 812-6920-6036</span>
                     </a>
@@ -537,12 +595,14 @@
             </div>
         </section>
 
+        <!-- 6. Lokasi Section -->
         <section id="location" class="py-12 md:py-20 fade-in-content delay-600">
             <h2 class="text-4xl font-extrabold text-center mb-12 text-accent">Lokasi Acara</h2>
             <div class="card p-6 md:p-10 rounded-2xl shadow-xl">
                 <p class="text-xl font-semibold mb-4 text-main-color">SMK Telkom 2 Medan</p>
-                <p class="text-gray-600 dark:text-gray-400 mb-6">Jl. Halat No.68, Kota Matsum II, Kec. Medan Area, Kota Medan, Sumatera Utara 20217</p>
+                <p class="text-secondary-color mb-6">Jl. Halat No.68, Kota Matsum II, Kec. Medan Area, Kota Medan, Sumatera Utara 20217</p>
 
+                <!-- Google Map Embed -->
                 <div class="map-container rounded-xl shadow-lg overflow-hidden">
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.942702173167!2d98.69663091475731!3d3.572356397405231!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303130572813881f%3A0x9623c9a8175c81af!2sSMK%20Telkom%202%20Medan!5e0!3m2!1sid!2sid!4v1701768000000!5m2!1sid!2sid" 
@@ -559,20 +619,30 @@
         </section>
     </main>
 
+    <!-- Footer -->
     <footer class="mt-10 py-8 card shadow-inner border-t border-gray-200 dark:border-gray-700 fade-in-content delay-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 dark:text-gray-400">
-            <p>© 2026 FESTASIMA Season 4. Diselenggarakan oleh SMK Telkom 2 Medan.</p>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-secondary-color">
+            <p>&copy; 2026 FESTASIMA Season 4. Diselenggarakan oleh SMK Telkom 2 Medan.</p>
             <p class="mt-2 text-sm">Embracing Harmony in the Digital Era.</p>
         </div>
     </footer>
 
+    <!-- Script Utama -->
     <script>
-        // Memuat Lucide Icons secara manual di akhir body
+        // Inisialisasi Lucide Icons
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
         });
+        
+        // Fungsi untuk mengontrol Menu Mobile
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('mobile-menu-overlay');
+            menu.classList.toggle('open');
+            overlay.classList.toggle('hidden');
+        }
     </script>
     <script type="module" src="index.js"></script>
 </body>
