@@ -289,13 +289,14 @@ export function setupFadeIn() {
             if (entry.isIntersecting) {
                 // Tambahkan sedikit delay berdasarkan kelas delay di HTML
                 let delay = 0;
-                if (entry.target.classList.contains('delay-100')) delay = 100;
-                else if (entry.target.classList.contains('delay-200')) delay = 200;
-                else if (entry.target.classList.contains('delay-300')) delay = 300;
-                else if (entry.target.classList.contains('delay-400')) delay = 400;
-                else if (entry.target.classList.contains('delay-500')) delay = 500;
-                else if (entry.target.classList.contains('delay-600')) delay = 600;
-                else if (entry.target.classList.contains('delay-700')) delay = 700;
+                // REVISI: Nilai delay dikurangi (langkah 50ms) agar stagger lebih cepat
+                if (entry.target.classList.contains('delay-100')) delay = 50;
+                else if (entry.target.classList.contains('delay-200')) delay = 100;
+                else if (entry.target.classList.contains('delay-300')) delay = 150;
+                else if (entry.target.classList.contains('delay-400')) delay = 200;
+                else if (entry.target.classList.contains('delay-500')) delay = 250;
+                else if (entry.target.classList.contains('delay-600')) delay = 300;
+                else if (entry.target.classList.contains('delay-700')) delay = 350;
 
                 setTimeout(() => {
                     entry.target.classList.add('visible'); // Tambahkan kelas 'visible'
