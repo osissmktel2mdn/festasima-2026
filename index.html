@@ -18,8 +18,15 @@
             font-family: 'Inter', sans-serif;
             transition: background-color 0.4s, color 0.4s;
             /* Pastikan body default menggunakan warna dari variabel */
-            background-color: var(--color-bg-primary, #ffffff); 
-            color: var(--color-text-primary, #111827); 
+            background-image: var(--bg-image);
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        
+            /* Fallback warna jika gambar gagal muat */
+            background-color: var(--color-bg-primary); 
+            color: var(--color-text-primary, #111827);
         }
 
         /* ------------------ */
@@ -29,6 +36,7 @@
         /* Dark Mode: Hitam ke Unguan (Elegan) */
         :root.dark {
             --color-bg-primary: #121016; /* Background Utama (Hitam Ungu Tua) */
+            --bg-image: url("./assets/bg-dark.png");
             --color-bg-secondary: #1E1A25; /* Background Card/Element (Ungu lebih terang) */
             --color-text-primary: #f0f0f0; /* Text Putih/Terang */
             --color-text-secondary: #b0b0b0; /* Text Abu-abu Muda */
@@ -42,6 +50,7 @@
         /* Light Mode: Perbaikan kontras (Menggunakan warna yang lebih kuat) */
         :root.light {
             --color-bg-primary: #ffffff; /* Background Utama (Putih bersih) */
+            --bg-image: url("./assets/bg-light.png");
             --color-bg-secondary: #f9f9f9; /* Background Card/Element (Abu-abu sangat terang) */
             --color-text-primary: #111827; /* Text Hitam Penuh (WAJIB GELAP) */
             --color-text-secondary: #4b5563; /* Text Abu-abu Tua */
